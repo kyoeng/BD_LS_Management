@@ -11,10 +11,8 @@
 
 
 
-<div id="app-container" class="bg-color-1" class:pd={
-    page.url.pathname !== "/login" && page.url.pathname !== "join" && page.url.pathname !== "find"
-}>
-    {#if page.url.pathname === "/login" || page.url.pathname === "join" || page.url.pathname === "find"}
+<div id="app-container" class="bg-color-1" class:pd={page.url.pathname.includes("/user")}>
+    {#if page.url.pathname.includes("/user")}
         {@render children()}
     {:else}
         <Header data={{name: "(주)형제철강레이져", auth: "관리자"}} />

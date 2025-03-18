@@ -1,8 +1,7 @@
 <script lang="ts">
     import arrowIcon from "$images/b-arrow-icon.svg";
     import { page } from "$app/state";
-    import { onDestroy, onMount } from "svelte";
-    import { PUBLIC_ADDR } from "$env/static/public";
+    import { PUBLIC_ENV_MODE } from "$env/static/public";
 
 
     // props
@@ -34,7 +33,7 @@
 
         <div id="current-sub-menu">
             <button id="sub-menu-btn" onclick={subMenuBtnClickEvt}>
-                {data.subList[page.url.href.split(PUBLIC_ADDR)[1]].name}
+                {data.subList[page.url.href.split(PUBLIC_ENV_MODE === "dev" ? "localhost:5173" : "실주소")[1]].name}
 
                 <div id="arrow-img">
                     <img src="{arrowIcon}" alt="arrow-icon">

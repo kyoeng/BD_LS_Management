@@ -1,17 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 
 
-function checkPathname(currentPath: string) {
-    const notRequiredPathList = [
-        "login",
-        "join",
-        "find"
-    ];
-
-    for (const path of notRequiredPathList) if (currentPath.includes(path)) return true;
-    return false;
-}
-
 
 export const load = async function({locals, url}) {
     // url
@@ -24,7 +13,7 @@ export const load = async function({locals, url}) {
     if (user) return { user };
 
     // 유저 정보가 없을 시 pathname 확인 후 redirect
-    if (!checkPathname(currentPath)) throw redirect(302, "/login");
+    if (!currentPath.includes("/user")) throw redirect(301, "/user/login");
 
     return;
 }

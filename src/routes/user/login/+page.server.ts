@@ -1,3 +1,53 @@
+import redis from "$lib/server/redis";
+import { fail, redirect, type Actions } from "@sveltejs/kit";
+
+
+
+
+
+
+
+export const actions: Actions = {
+    default: async ({cookies, request}) => {
+        const reqData = await request.formData();
+        const id = reqData.get("id");
+        const pw = reqData.get("pw");
+
+        // 로그인 로직
+        if (id === "admin" && pw === "admin") {
+            // 세션 쿠키 생성
+            const sessionId = crypto.randomUUID();
+            cookies.set("session_id", sessionId, {
+                httpOnly: true,
+                secure: true,
+                path: '/',
+                maxAge: 60 * 60 * 9
+            });
+
+            // redis에 세션 정보 저장 (추후 로그인된 계정 정보로 변경)
+            await redis.set(
+                `session_id:${sessionId}`, 
+                JSON.stringify({
+                    name: "관리자",
+                    level: 1,
+                    company: "(주)형제철강레이저"
+                }),
+                "EX",
+                60 * 60 * 9
+            );
+
+            redirect(301, "/");
+        } else {
+            return fail(400, { incorrect: true });
+        }
+    }
+}
+
+
+
+
+
+
 // export const actions: Actions = {
 //     // 이메일 인증을 위한 메일 발송
 //     sendEmailAuth: async ({cookies, request}) => {

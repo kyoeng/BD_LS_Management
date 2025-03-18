@@ -3,19 +3,46 @@
 
 
 
-
+    // props
+    let { form } = $props();
+    
     // step state
     let stepState = $state(0);
 
     // id input element
-    let idInputEl;
+    let idInputEl: HTMLInputElement;
 
     // pw input element
-    let pwInputEl;
+    let pwInputEl: HTMLInputElement;
+
+    // btn element
+    let btnEl: HTMLButtonElement;
 
 
-    const test = () => {
-        stepState += 1;
+
+    // input oninput evt
+    function inputOninputEvt(e: Event) {
+        // id step인 경우
+        if (stepState <= 0) {
+            if (idInputEl.value.length <= 0) btnEl.disabled = true;
+            else btnEl.disabled = false;
+
+        // pw step인 경우
+        } else {
+            if (pwInputEl.value.length <= 0) btnEl.disabled = true;
+            else btnEl.disabled = false;
+        }
+    }
+
+
+    // btn click evt
+    function btnClickEvt(e: Event) {
+        // id step인 경우
+        if (stepState <= 0) {
+            e.preventDefault();
+            btnEl.type = "submit";
+            stepState += 1;
+        }
     }
 </script>
 
@@ -31,19 +58,29 @@
             <span id="login-title">로그인</span>
         </div>
 
-        <form id="login-form" action="?/login" method="post">
+        <form id="login-form" method="post">
+            {#if form?.incorrect}
+
+            {/if}
+
             <div id="step-container" class:pw={stepState}>
                 <!-- ID STEP -->
                 <div id="id-step" class="step-wrapper">
                     <p class="step-info">ID를 입력해주세요.</p>
-                    <input id="id-input" class="input" type="text" bind:this={idInputEl}>
+
+                    <input id="id-input" class="input" name="id" autocomplete="off"
+                    type="text" bind:this={idInputEl} oninput={inputOninputEvt}>
+
                     <a class="find-link" href="/find?t=i">ID를 잊으셨나요?</a>
                 </div>
                 
                 <!-- PW STEP -->
                 <div id="pw-step" class="step-wrapper">
                     <p class="step-info">비밀번호를 입력해주세요.</p>
-                    <input id="id-input" class="input" type="text" bind:this={pwInputEl}>
+
+                    <input id="id-input" class="input" name="pw" autocomplete="off"
+                    type="password" bind:this={pwInputEl} oninput={inputOninputEvt}>
+
                     <a class="find-link" href="/find?t=i">비밀번호를 잊으셨나요?</a>
                 </div>
             </div>
@@ -55,7 +92,7 @@
             </div>
 
             <!-- BUTTON -->
-            <button id="form-btn" type="button" onclick={test}>
+            <button id="form-btn" type="button" disabled bind:this={btnEl} onclick={btnClickEvt}>
                 {stepState === 0 ? "다음" : "로그인"}
             </button>
         </form>
@@ -189,6 +226,11 @@
                     background-color: var(--color-blue2);
                     color: var(--color-light-font);
                     font-family: var(--font-b);
+                    cursor: pointer;
+                }
+                #form-btn:disabled {
+                    background-color: var(--color-deep3);
+                    cursor: default;
                 }
             }
         }
