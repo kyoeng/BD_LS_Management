@@ -1,0 +1,5 @@
+<svg width="80" height="80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polygon style="fill: #47C83E" points="5, 5, 5, 75, 60, 75"></polygon>
+    <polygon style="fill:#f5b862" points="60, 5, 60, 75, 75, 75, 75, 5"></polygon>
+    <circle style="fill:#f55f5f" r="5" cx="15" cy="65"></circle>
+</svg>
